@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }} — Mileage Tracker v2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2563EB;
+      --primary-hover: #1D4ED8;
+      --primary-subtle: #EFF6FF;
+      --surface: #FFFFFF;
+      --background: #F8FAFC;
+      --border: #E2E8F0;
+      --text-primary: #0F172A;
+      --text-secondary: #64748B;
+      --text-muted: #94A3B8;
+      --success: #16A34A;
+      --success-subtle: #F0FDF4;
+      --warning: #D97706;
+      --warning-subtle: #FFFBEB;
+      --error: #DC2626;
+      --error-subtle: #FEF2F2;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --shadow-card: 0 1px 3px rgba(0,0,0,0.08);
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 16px;
+      --space-lg: 24px;
+      --space-xl: 32px;
+      --font-sans: 'Inter', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
+      line-height: 1.5;
+      color: var(--text-primary);
+      background: var(--background);
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 56px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 var(--space-lg);
+    }
+    header nav { display: flex; gap: var(--space-lg); align-items: center; }
+    header nav a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      padding: var(--space-sm) 0;
+      border-bottom: 2px solid transparent;
+    }
+    header nav a:hover { color: var(--primary); }
+    header nav a.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+      font-weight: 600;
+    }
+    .shell { max-width: 1200px; margin: 0 auto; padding: var(--space-lg); }
+    main {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-card);
+      padding: var(--space-lg);
+    }
+    h1 {
+      margin: 0 0 var(--space-lg);
+      font-size: 1.875rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      line-height: 1.3;
+      margin: var(--space-xl) 0 var(--space-md);
+    }
+    label {
+      display: block;
+      margin: var(--space-md) 0 var(--space-xs);
+      font-weight: 500;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+    label .required { color: var(--error); }
+    input, textarea, select {
+      width: 100%;
+      height: 40px;
+      padding: 0 var(--space-md);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
+      color: var(--text-primary);
+      background: var(--surface);
+    }
+    textarea { height: auto; min-height: 5rem; padding: var(--space-sm) var(--space-md); resize: vertical; }
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px var(--primary-subtle);
+    }
+    input::placeholder, textarea::placeholder { color: var(--text-muted); }
+    button, .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: var(--space-sm) var(--space-md);
+      border: 0;
+      border-radius: var(--radius-sm);
+      background: var(--primary);
+      color: #fff;
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: 0.875rem;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    button:hover, .button:hover { background: var(--primary-hover); }
+    button.secondary, .button.secondary {
+      background: var(--surface);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+    button.secondary:hover, .button.secondary:hover { background: var(--background); }
+    button.danger, .button.danger { background: var(--error); }
+    button:disabled, .button.disabled { opacity: 0.5; pointer-events: none; }
+    .error {
+      background: var(--error-subtle);
+      color: var(--error);
+      padding: var(--space-md);
+      border-radius: var(--radius-sm);
+      margin-bottom: var(--space-md);
+      border: 1px solid #FECACA;
+    }
+    .success {
+      background: var(--success-subtle);
+      color: var(--success);
+      padding: var(--space-md);
+      border-radius: var(--radius-sm);
+      margin-bottom: var(--space-md);
+      border: 1px solid #BBF7D0;
+    }
+    .muted { color: var(--text-secondary); font-size: 0.875rem; }
+    .muted a { color: var(--primary); }
+    .mono { font-family: var(--font-mono); }
+    table { width: 100%; border-collapse: collapse; margin-top: var(--space-md); }
+    th, td { text-align: left; padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border); }
+    th { font-weight: 600; font-size: 0.75rem; color: var(--text-secondary); background: var(--background); }
+    tbody tr:nth-child(even) { background: var(--background); }
+    tbody tr.late-entered { background: var(--warning-subtle); }
+    .badge {
+      display: inline-block;
+      padding: 2px var(--space-sm);
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      background: var(--border);
+      color: var(--text-secondary);
+    }
+    .badge.deductible { background: var(--success-subtle); color: var(--success); }
+    .badge.late { background: var(--warning-subtle); color: var(--warning); }
+    .actions { display: flex; gap: var(--space-sm); flex-wrap: wrap; margin-top: var(--space-md); }
+    .inline-form { display: inline; }
+    .inline-form button { margin-top: 0; }
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: var(--space-md);
+      margin: var(--space-lg) 0;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      box-shadow: var(--shadow-card);
+    }
+    .stat-card .label { font-size: 0.75rem; color: var(--text-secondary); font-weight: 500; }
+    .stat-card .value { font-family: var(--font-mono); font-size: 1.25rem; font-weight: 600; margin-top: var(--space-xs); }
+    .empty-state {
+      text-align: center;
+      padding: var(--space-xl);
+      color: var(--text-secondary);
+    }
+    @media (max-width: 767px) {
+      header { padding: 0 var(--space-md); }
+      header nav { gap: var(--space-md); font-size: 0.8rem; }
+      .shell { padding: var(--space-md); }
+      main { padding: var(--space-md); }
+      table { display: block; overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+  {% if user is defined and user %}
+  <header>
+    <nav>
+      <a href="/" class="{% if title == 'Dashboard' %}active{% endif %}">Dashboard</a>
+      <a href="/trips" class="{% if title == 'Trips' or 'Trip' in title %}active{% endif %}">Trips</a>
+      <a href="/vehicles" class="{% if title == 'Vehicles' or 'Vehicle' in title %}active{% endif %}">Vehicles</a>
+      <a href="/summary" class="{% if 'summary' in title|lower %}active{% endif %}">Export</a>
+    </nav>
+    <form method="post" action="/logout" class="inline-form">
+      <button type="submit" class="secondary">Log out</button>
+    </form>
+  </header>
+  {% endif %}
+  <div class="shell">
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</body>
+</html>
